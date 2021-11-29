@@ -2,6 +2,7 @@ package speedtest
 
 import (
 	"context"
+	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -20,7 +21,15 @@ type uploadFunc func(context.Context, string, int) error
 
 var dlSizes = [...]int{350, 500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000}
 var ulSizes = [...]int{100, 300, 500, 800, 1000, 1500, 2500, 3000, 3500, 4000} //kB
-var client = http.Client{}
+var client = &http.Client{}
+
+func SetClient(c *http.Client) error {
+	if c == nil {
+		return errors.New("no client")
+	}
+	client = c
+	return nil
+}
 
 // DownloadTest executes the test to measure download speed
 func (s *Server) DownloadTest(savingMode bool) error {
