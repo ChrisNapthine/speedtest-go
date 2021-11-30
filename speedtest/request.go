@@ -109,6 +109,26 @@ func (s *Server) downloadTestContext(
 	return nil
 }
 
+// TestUpload executes a quick warmup test for upload to check server can play ball
+func (s *Server) TestUpload() error {
+	return ulWarmUp(context.Background(), s.URL)
+}
+
+// TestUploadContext executes a quick warmup test for upload to check server can play ball, observing the given context.
+func (s *Server) TestUploadContext(ctx context.Context) error {
+	return ulWarmUp(ctx, s.URL)
+}
+
+// TestDownload executes a quick warmup test for download to check server can play ball
+func (s *Server) TestDownload() error {
+	return dlWarmUp(context.Background(), s.URL)
+}
+
+// TestDownloadContext executes a quick warmup test for download to check server can play ball, observing the given context.
+func (s *Server) TestDownloadContext(ctx context.Context) error {
+	return dlWarmUp(ctx, s.URL)
+}
+
 // UploadTest executes the test to measure upload speed
 func (s *Server) UploadTest(savingMode bool) error {
 	return s.uploadTestContext(context.Background(), savingMode, ulWarmUp, uploadRequest)
